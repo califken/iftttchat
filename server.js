@@ -8,7 +8,7 @@ async function runCompletion (input) {
          model: "text-davinci-003",
          prompt: input,
          temperature: 0,
-         max_tokens: 1000,
+         max_tokens: 100,
      });
      return completion.data.choices[0].text;
  }
@@ -24,7 +24,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json()); // Required to parse JSON request body
-app.post('/api/request', async (req, res) => {
+app.post('/api/users', async (req, res) => {
     try {
         let prompt = req.body.prompt;
         let completion = await runCompletion(prompt);
