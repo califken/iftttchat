@@ -1,14 +1,16 @@
-const dotenvconfig = require('dotenv').config();
-const config = {apiKey: process.env.OPENAI_API_KEY};
+
 const { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration(config);
+require('dotenv').config()
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 const openai = new OpenAIApi(configuration);
+
 async function runCompletion (input) {
     const completion = await openai.createCompletion({
          model: "text-davinci-003",
          prompt: input,
-         temperature: 0,
-         max_tokens: 100,
+         temperature: 0.6,
      });
      return completion.data.choices[0].text;
  }
@@ -23,8 +25,18 @@ app.use(morgan('combined'))
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.json()); // Required to parse JSON request body
-app.post('/api/users', async (req, res) => {
+
+//app.use(express.json()); // Required to parse JSON request body
+//app.post('/api/users', async (req, res) => {
+    
+app.post('/', async function(req,res){
+    if (!configuration.apiKey) {
+        res.status(500).json({
+          error: {
+            message: "OpenAI API key not configured, please follow instructions in README.md",
+          }
+        })
+    }   
     try {
         let prompt = req.body.prompt;
         let completion = await runCompletion(prompt);
