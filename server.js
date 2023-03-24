@@ -14,6 +14,8 @@ async function runCompletion (input) {
      });
      return completion.data.choices[0].text;
  }
+
+ const https = require("https");
 const express = require('express')
 const bodyParser = require('body-parser');
 const morgan = require('morgan')
