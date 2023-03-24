@@ -28,7 +28,10 @@ app.use(bodyParser.json());
 
 //app.use(express.json()); // Required to parse JSON request body
 //app.post('/api/users', async (req, res) => {
-    
+
+app.get('/', function(req,res){
+    res.send('Ok')
+});
 app.post('/', async function(req,res){
     if (!configuration.apiKey) {
         res.status(500).json({
